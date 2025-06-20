@@ -26,13 +26,14 @@ model User {
     credits        Int             @default(200)
     userToProjects UserToProject[]
     questionsAsked  Question[]
+    stripeTransactions  StripeTransaction[]
 }
 
 model Project {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
+    githubToken  String?
     name      String
     githubUrl String
 
@@ -42,6 +43,7 @@ model Project {
     commits        Commit[]
     sourceCodeEmbeddings  SourceCodeEmbedding[]
     savedQuestions  Question[]
+    Meetings Meeting[]
 }
 
 model UserToProject {
@@ -52,10 +54,58 @@ model UserToProject {
     userId    String
     projectId String
 
-    user    User    @relation(fields: [userId], references: [id])
-    project Project @relation(fields: [projectId], references: [id])
+    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
     @@unique([userId, projectId])
+}
+
+model Meeting{
+    id         String   @id @default(cuid())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    meetingUrl String
+    name String
+    status MeetingStatus @default(PROCESSING)
+
+    projectId String
+    project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    issues Issue[]
+}
+
+enum MeetingStatus{
+    PROCESSING
+    COMPLETED
+    
+}
+
+
+model Issue{
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    start String
+    end String
+    gist String
+    headline String
+    summary String
+    meetingId String
+    meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+}
+
+
+model StripeTransaction{
+    id    String     @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId   String
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade) 
+
+    credits Int
+    
 }
 
 model SourceCodeEmbedding {
@@ -66,7 +116,7 @@ model SourceCodeEmbedding {
     summary  String
 
     projectId  String
-    project  Project  @relation(fields: [projectId], references: [id])
+    project  Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Question{
@@ -80,9 +130,9 @@ model Question{
     filesReferences   Json?
 
     projectId  String
-    project  Project @relation(fields: [projectId], references: [id])
+    project  Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
     userId  String
-    user  User  @relation(fields: [userId], references: [id])
+    user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Commit {
@@ -90,10 +140,10 @@ model Commit {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     projectId String
-    project   Project  @relation(fields: [projectId], references: [id])
+    project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
     commitMessage      String
-    commitHash         String
+    commitHash         String  @unique
     commitAuthorName   String
     commitAuthorAvatar String
     commitDate         DateTime

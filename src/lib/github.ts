@@ -11,7 +11,7 @@ export const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
 })
 
-const githubUrl = 'https://github.com/docker/genai-stack'
+
 
 type Response = {
     commitHash: string
@@ -80,10 +80,11 @@ async function summariseCommit(githubUrl: string, commitHash: string){
     //get the diff , thn pass the diff into ai
     const {data} = await axios.get(`${githubUrl}/commit/${commitHash}.diff`, {
         headers: {
-            Accept: 'application/vnd.github.v3.diff',
+            Accept: 'application/vnd.github.v3+json',
         }
     })
-    return await aiSummariseCommit(data) || ""
+    const summary = await aiSummariseCommit(data);
+    return summary ? summary : "No summary available";
 }
 
 async function fetchProjectGithubUrl(projectId: string) {
@@ -103,11 +104,12 @@ async function fetchProjectGithubUrl(projectId: string) {
 async function filterUnprocessedCommits(projectId: string, commitHashes: Response[]) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const processedCommits = await db.commit.findMany({
-        where: {projectId}
+        where: {projectId: projectId},
+        select: {commitHash: true},
     })
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const unprocessedCommits = commitHashes.filter((commit) => !processedCommits.some((processedCommit) => processedCommit.commitHash === commit.commitHash))
     return unprocessedCommits
 }
 
-await pollCommits("projectId").then(console.log) // Example usage, replace "projectId" with an actual project ID
+//await pollCommits("projectId").then(console.log) // Example usage, replace "projectId" with an actual project ID

@@ -40,9 +40,9 @@ const AskQuestionCard = () => {
     if (!project?.id) return
     setLoading(true)
 
-    const {output, filesRefrences} = await askQuestion(question, project.id)
+    const {output, filesReferences} = await askQuestion(question, project.id)
     setOpen(true)
-    setFilesReferences(filesRefrences)
+    setFilesReferences(filesReferences)
 
     for await (const delta of readStreamableValue(output)){
       if(delta){
@@ -63,7 +63,7 @@ const AskQuestionCard = () => {
           <DialogTitle>
             <div className='flex items-center gap-2'>
             <Image src='/favicon.ico' alt='logo' width={40} height={40}/>
-            <h1 className='text-2xl font-bold'>Dionysus</h1>
+            <h1 className='text-2xl font-bold'>GitMind AI</h1>
             </div>
           </DialogTitle>
 
@@ -72,7 +72,7 @@ const AskQuestionCard = () => {
               projectId: project!.id,
               question,
               answer,
-              filesRefrences: filesReferences
+              filesReferences: filesReferences
             },{
               onSuccess:()=>{
                 toast.success('Answer saved successfully')
@@ -96,7 +96,7 @@ const AskQuestionCard = () => {
             "data-color-mode": theme === 'dark' ? 'dark' : 'light',
           }}/>    
         {/* <div className="h-1"></div> */}
-        <CodeRefrence filesRefrences={filesReferences} />
+        <CodeRefrence filesReferences={filesReferences} />
         <button type='button' onClick={() => { setOpen(false) }} className='border rounded-md py-2 -mt-3 bg-primary/40'>
           Close
         </button>
@@ -111,7 +111,7 @@ const AskQuestionCard = () => {
           <form onSubmit={onSubmit} onKeyDown={(e) => { if (e.key === 'Enter') onSubmit(e); }}>
             <Textarea className='h-28' placeholder='Which file should I edit to change the home page?' value={question} onChange={(e) => setQuestion(e.target.value)}/>
             <div className="h-4"></div>
-            <Button type='submit' disabled={loading}>{loading ? 'Asking Dionysus...' : 'Ask Dionysus!'}</Button>
+            <Button type='submit' disabled={loading}>{loading ? 'Asking GitMind...' : 'Ask GitMind!'}</Button>
           </form>
         </CardContent>
       </Card>
