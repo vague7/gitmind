@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
 // Import the functions you need from the SDKs you need
-import { set } from "date-fns";
+
 import { initializeApp } from "firebase/app";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -8,7 +8,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBAHrimrmifacteM9P9PQqDHR_7fTDe1oA",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ,
   authDomain: "gitmindai-75dfe.firebaseapp.com",
   projectId: "gitmindai-75dfe",
   storageBucket: "gitmindai-75dfe.firebasestorage.app",
