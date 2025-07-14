@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Github, Zap, Users, MessageSquare } from 'lucide-react';
 
@@ -67,8 +67,8 @@ export function Hero() {
               <div className="text-sm text-muted-foreground">Less Time Onboarding</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-orange-500 mb-2">10k+</div>
-              <div className="text-sm text-muted-foreground">Developers Trust Us</div>
+              <div className="text-2xl md:text-3xl font-bold text-orange-500 mb-2">1k+</div>
+              <div className="text-sm text-muted-foreground">Commits Reviewed</div>
             </div>
           </div>
         </div>

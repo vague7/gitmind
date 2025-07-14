@@ -44,6 +44,7 @@ const CommitLog = () => {
     return (
         <>
             <p className='text-sm text-gray-500 pb-2'>Latest commits</p>
+            
             <ul className='space-y-6'>
                 {commits
                     .sort((a, b) => new Date(b.commitDate).getTime() - new Date(a.commitDate).getTime())
@@ -62,7 +63,7 @@ const CommitLog = () => {
                                 <img
                                     src={commit.commitAuthorAvatar}
                                     alt={'commit Avatar'}
-                                    className='relative mt-4 size-8 flex-none bg-gray-50 rounded-full'
+                                    className='relative mt-2 flex-none bg-gray-50 rounded-full h-12 w-12'
                                 />
                                 <div className='flex-auto rounded-md p-3 ring-1 ring-inset ring-border'>
                                     <div className='flex justify-between gap-x-4'>
@@ -84,7 +85,7 @@ const CommitLog = () => {
                                         </p>
                                     </div>
                                     <span className='font-semibold text-foreground'>{commit.commitMessage}</span>
-                                    <div className='mt-2 whitespace-pre-wrap text-muted-foreground text-sm leading-6'
+                                    <div className='mt-2 whitespace-pre-wrap text-muted-foreground text-sm leading-6 max-h-32 overflow-y-auto'
                                         dangerouslySetInnerHTML={{
                                             __html: commit.summary
                                                 .replace(/(\*{2})(.*?)\1/g, '<b>$2</b>')
@@ -96,6 +97,7 @@ const CommitLog = () => {
                         </li>
                     ))}
             </ul>
+            
         </>
     )
 }

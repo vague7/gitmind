@@ -40,7 +40,7 @@ export function AppSidebar(){
         <Sidebar collapsible="icon" variant="floating" >
             <SidebarHeader>
                 <div className="flex items-center gap-2">
-                    <img src={'/favicon.ico'} alt="logo" className="size-8" />
+                    <img src='/giticon.png' alt="logo" className="size-8" />
                     {open && <h1 className="text-xl font-bold text-primary/80">GitMind</h1>}
                 </div>
             </SidebarHeader>
@@ -56,26 +56,12 @@ export function AppSidebar(){
                                 return(
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton asChild>
-                                            
-                                            <Link
-                                                href={item.url}
-                                                className={cn(
-                                                    "flex items-center rounded-md transition-all",
-                                                    {
-                                                    "px-3 py-2 gap-2 w-full justify-start": open,
-                                                    "p-2 w-[40px] justify-center": !open, // fixed width when collapsed
-                                                    "!bg-primary text-white": pathname === item.url,
-                                                    }
-                                                )}
-                                                >
-                                                <item.icon className="min-w-5 min-h-5" />
-                                                {open && (
-                                                    <span className="truncate">{item.title}</span>
-                                                )}
+                                            <Link href={item.url} className={cn({
+                                                '!bg-primary !text-white': pathname === item.url
+                                            })}>
+                                                <item.icon className="shrink-0" />
+                                                <span className="group-data-[collapsible=icon]:hidden">{item.title}</span>
                                             </Link>
-
-                                            
-
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 )
@@ -91,8 +77,7 @@ export function AppSidebar(){
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu> 
-
-                            {projects?.map((project)=>{
+                            {open && projects?.map((project)=>{
                                 return(
                                     <SidebarMenuItem key={project.name}>
                                         <SidebarMenuButton asChild>
@@ -102,21 +87,17 @@ export function AppSidebar(){
                                                     router.push('/dashboard');
                                                 }
                                             }} className={cn("cursor-pointer", {
-                                                "bg-primary/20": project.id === projectId
+                                                "!bg-primary !text-white": project.id === projectId
                                             })}>
                                                 <div className={cn(
-                                                    'rounded-sm border size-6 -ml-1 flex items-center justify-center text-sm bg-white text-primary',
+                                                    'rounded-sm border size-4 flex items-center justify-center text-xs bg-white text-primary font-semibold shrink-0',
                                                     {
                                                         'bg-primary text-white': project.id === projectId
                                                     }
                                                 )}>
-                                                    <span className="p-3">{project.name[0]}</span>
+                                                    {project.name[0]}
                                                 </div>
-                                                    <span className={cn("transition-all truncate overflow-hidden whitespace-nowrap", 
-                                                        !open && "sr-only")}>
-                                                        {project.name}
-                                                    </span>
-
+                                                <span>{project.name}</span>
                                             </div>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>

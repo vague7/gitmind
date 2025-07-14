@@ -91,11 +91,14 @@ const getFileCount = async (path: string, octokit: Octokit, githubOwner: string,
 }
 export const checkCredits = async (githubUrl: string, githubToken?: string) => {
     const octokit = new Octokit({auth: githubToken});
+    console.log("Using GitHub token?", !!githubToken);
     const githubOwner = githubUrl.split("/")[3];
     const githubRepo = githubUrl.split("/")[4];
     if(!githubOwner || !githubRepo) return 0;
 
     
     const fileCount= await getFileCount('', octokit, githubOwner, githubRepo,0);
+    console.log({ githubUrl, githubOwner, githubRepo });
+
     return fileCount;
 }

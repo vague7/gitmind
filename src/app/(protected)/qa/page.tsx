@@ -50,7 +50,7 @@ const QAPage = () => {
 
 
       {question && (
-        <SheetContent className='sm:max-w-[80vw]'>
+        <SheetContent className='sm:max-w-[80vw] overflow-y-auto position=right'>
           <SheetHeader>
             <SheetTitle>
               {question.question}

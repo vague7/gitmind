@@ -203,6 +203,7 @@ export const projectRouter = createTRPCRouter({
     })).mutation(async ({ctx, input}) => {
         const fileCount = await checkCredits(input.githubUrl, input.githubToken);
         const userCredits = await ctx.db.user.findUnique({
+            
             where: {
                 id: ctx.user.userId!,
             },
@@ -210,10 +211,12 @@ export const projectRouter = createTRPCRouter({
                 credits: true
             }
         })
+        
         return {
             fileCount,
             credits: userCredits?.credits ?? 0
         }
+        
     }),
 
     getPurchaseHistory: protectedProcedure.query(async ({ ctx }) => {
